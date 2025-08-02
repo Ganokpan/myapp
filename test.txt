@@ -1,0 +1,9 @@
+External Database URL
+postgresql://
+myapp_db_ylzr_user
+:
+LSK0M11G0VpAOtFkZzXsKhK3JaE2uzTz
+@
+dpg-d26onf6uk2gs73c7lqt0-a.singapore-postgres.render.com
+/
+myapp_db_ylzr

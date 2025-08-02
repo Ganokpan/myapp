@@ -1,24 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken')
+let User = require('../models/user')
 
 
 /* post users listing.  เพราะ login ส่ง body ผ่าน post*/
-router.post('/', function (req, res, next) {
+router.post('/', async function (req, res, next) {
     try {
-        let userData = [
-            {
-                username: "Gloy",
-                password: "1234",
-                fullname: "Ganok"
-            },
-            {
-                username: "Kome",
-                password: "4561",
-                fullname: "Earnning"
-            }
-        ]
-
         let body = req.body
         /*if (!body.username) {
             throw new Error("Username is request!!");
@@ -33,7 +21,25 @@ router.post('/', function (req, res, next) {
 
         let usernameIsValid = false
         let passwordIsValid = false
-        for (let user of userData) {
+
+        const userData = await User.findOne({
+            where: {
+                username: body.username
+            }
+        }) //เจออันไหนอันแรกเอาอันนั้น
+        if (userData !== null) {
+            usernameIsValid = true
+            if (userData.dataValues) {
+                console.log("=".repeat(30))
+                console.log(userData.dataValues)
+                console.log("=".repeat(30))
+                if (userData.dataValues.password === body.password) {
+                    passwordIsValid = true
+                }
+            }
+        }
+
+        /*for (let user of userData) {
             //console.log(user)
             if (body.username == user.username) {
                 usernameIsValid = true
@@ -41,7 +47,7 @@ router.post('/', function (req, res, next) {
             if (body.password == user.password) {
                 passwordIsValid = true
             }
-        }
+        }*/
         /*for (let pass of userData) {
             if (body.password == pass.password) {
                 passwordIsValid = true
@@ -52,7 +58,7 @@ router.post('/', function (req, res, next) {
             throw new Error("Username or Password invalid!!");
         }
 
-        let token = jwt.sign({ foo: 'bar' }, 'shhhhh', {expiresIn: "1h"});
+        let token = jwt.sign({ foo: 'bar' }, 'shhhhh', { expiresIn: "1h" });
         console.log(token)
 
         //let tokenData = jwt.decode(token)
@@ -62,7 +68,7 @@ router.post('/', function (req, res, next) {
 
         let isValidToken = jwt.verify(token, 'shhhhh')
         console.log(isValidToken)
-        console.log(new Date(isValidToken.exp*1000))
+        console.log(new Date(isValidToken.exp * 1000))
         /*if (!usernameIsValid) {
             throw new Error("Username invalid!!");
         }*/

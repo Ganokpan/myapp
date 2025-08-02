@@ -10,6 +10,43 @@ let loginRouter = require("./routes/login")
 
 let tokenVerify = require("./middlewares/tokenHandle")
 
+let sequelize = require("./middlewares/database")
+const User = require("./models/user")
+
+async function testingConnectDatabase() {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+        console.log(User === sequelize.models.User)
+        sequelize.sync()//สร้างdatabase
+
+
+        const users = await User.findAll();
+        console.log(("--*--").repeat(20)) //เขียนซ้ำกัน 20 รอบ
+        //console.log(users)
+        //console.log('All users:', JSON.stringify(users, null, 2));
+
+        /*for (let data of users) {
+            console.log(data.dataValues)
+            
+        }*/
+
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
+testingConnectDatabase()
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlaintextPassword = '1235';
+
+bcrypt.genSalt(saltRounds, function(err, salt) {
+    bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+        console.log(hash)
+    });
+});
+
 var app = express();
 
 app.use(logger('dev'));
