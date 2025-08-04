@@ -1,4 +1,5 @@
 let jwt = require("jsonwebtoken")
+require('dotenv').config()
 
 function tokenVerify(req, res, next) {
     try {
@@ -6,9 +7,9 @@ function tokenVerify(req, res, next) {
         if (!TOKEN) {
             throw new Error("Token is required.")
         }
-        console.log(TOKEN)
-        let rawToken = TOKEN.slice(7)
-        let tokenData = jwt.verify(rawToken, 'shhhhh')
+        //console.log(TOKEN)
+        let rawToken = TOKEN.slice(7) // ตัดคำว่า "Bearer "
+        const tokenData = jwt.verify(rawToken, process.env.JWT_SECRET);
         console.log(tokenData)
         next()
     } catch (error) {

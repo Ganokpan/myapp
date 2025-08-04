@@ -1,21 +1,17 @@
 const { DataTypes } = require("sequelize")
 const sequelize = require('../middlewares/database')
 
-const User = sequelize.define(
-    "User",
+const Shop = sequelize.define(
+    "Shop",
     {
-        username:{
+        name:{
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
-        password:{
+        address:{
             type: DataTypes.STRING,
             allowNull: false
-        },
-        fullname:{
-            type: DataTypes.STRING,
-            allowNull: true
         }
     },{
         createdAt: false,
@@ -23,4 +19,4 @@ const User = sequelize.define(
     }
 )
 
-module.exports = User
+module.exports = Shop
